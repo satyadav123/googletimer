@@ -1,23 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import Stopwatch from './components/stopwatch.js';
+import Timer from './components/timer.js';
+import {useState,useRef, useEffect} from 'react';
 
 function App() {
+  const [showTimer,setShowTimer] = useState(true);
+
+  const timerTab = useRef(null);
+  const stopwatchTab = useRef(null);
+  
+  useEffect(() => {
+      document.querySelector("#timer").classList.toggle("selected");
+      document.querySelector("#stopwatch").classList.toggle("selected");
+  },[showTimer]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div id="tabs">
+        <div
+          id="timer"
+          ref={timerTab}
+          className="selected"
+          onClick={() => {
+            if (!showTimer) {
+              setShowTimer(true);
+            
+            }
+          }}
         >
-          Learn React
-        </a>
-      </header>
+         <button>TIMER</button> 
+        </div>
+        <div
+          id="stopwatch"
+          ref={stopwatchTab}
+          onClick={() => {
+            if (showTimer) {
+              setShowTimer(false);
+
+            }
+          }}
+        >
+         <button>STOPWATCH</button> 
+        </div>
+      </div>
+      <div id="content">{showTimer ? <Timer /> : <Stopwatch />}</div>
     </div>
   );
 }
